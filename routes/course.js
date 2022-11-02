@@ -18,8 +18,11 @@ const auth = require("../auth.js");
 
 // S39 ACTIVITY PLS CHECK THANKS
 router.post("/create", auth.verify, (req, res) => {
-	const userData = auth.decode(req.headers.authorization)
-	courseController.addCourse(req.body, userData).then(resultFromController => {
+	const data = {
+		course: req.body,
+		isAdmin: auth.decode(req.headers.authorization).isAdmin
+	}
+	courseController.addCourse(data).then(resultFromController => {
 		res.send(resultFromController);
 	})
 })
