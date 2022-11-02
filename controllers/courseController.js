@@ -10,13 +10,18 @@ module.exports.addCourse = (data) => {
 
 	return newCourse.save().then((newCourse, error) => {
 			if(error){
-				return false
+				return error
 			}
 
-			return true
+			return newCourse
 		})
-	}else {
-		return false
 	}
+
+	let message = Promise.resolve({
+		message: 'User must be ADMIN to access this.'
+	})
 	
+	return message.then((value) => {
+		return value
+	})
 }
