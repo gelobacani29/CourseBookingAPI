@@ -16,12 +16,58 @@ module.exports.addCourse = (data) => {
 			return newCourse
 		})
 	}
-
+	// If the user is not admin, then return this message as a promise to avoid error
 	let message = Promise.resolve({
 		message: 'User must be ADMIN to access this.'
 	})
 	
 	return message.then((value) => {
 		return value
+	})
+}
+
+module.exports.getAllCourses = () => {
+	return Course.find({}).then(result => {
+		return result
+	})
+}
+
+module.exports.getActiveCourses = () => {
+	return Course.find({isActive: true}).then(result => {
+		return result
+	})
+}
+
+module.exports.getCourse = (courseId) => {
+	return Course.findById(courseId).then(result => {
+		return result
+	})
+}
+
+module.exports.updateCourse = (courseId, newData) => {
+	return Course.findByIdAndUpdate(courseId, {
+		name: newData.name,
+		description: newData.description,
+		price: newData.price
+	})
+	.then((updatedCourse, error) => {
+		if(error){
+			return false
+		}
+
+		return true
+	})
+}
+
+module.exports.archiveCourse = (courseId) => {
+	return Course.findByIdAndUpdate(courseId, {
+		isActive: false
+	})
+	.then((archiveCourse, error) => {
+		if(error){
+			return false
+		}
+
+		return true
 	})
 }
